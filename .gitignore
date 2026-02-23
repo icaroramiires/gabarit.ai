@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+apps/api/venv/
+__pycache__/
+*.pyc
+apps/api/gabarit.db
+.pnpm-debug.log*
+.venv/

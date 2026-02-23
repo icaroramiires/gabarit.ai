@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlmodel
+psycopg2-binary
+pytest
+httpx
+pydantic-settings
+alembic
+python-dotenv
+
