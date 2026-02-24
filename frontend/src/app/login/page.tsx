@@ -1,5 +1,5 @@
 import { LoginForm } from "@/features/auth/ui/LoginForm";
-import { GraduationCap, BookOpen, BarChart2, MessageSquareText } from "lucide-react";
+import { BookOpen, BarChart2, MessageSquareText } from "lucide-react";
 
 export default function LoginPage() {
     return (

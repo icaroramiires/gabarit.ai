@@ -1,5 +1,5 @@
-export interface RegisterUserRequestDto {
-    name: string;
-    email: string;
-    password: string;
+export class RegisterUserRequestDto {
+    name!: string;
+    email!: string;
+    password!: string;
 }

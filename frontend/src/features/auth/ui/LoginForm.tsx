@@ -3,10 +3,56 @@
 import React, { useState } from 'react';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useAuth } from '@/core/auth/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 export function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const { login } = useAuth();
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        setIsLoading(true);
+
+        try {
+            const res = await fetch('http://localhost:3001/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const payload = await res.json();
+
+            if (!res.ok) {
+                throw new Error(payload.message || 'Erro ao fazer login');
+            }
+
+            const token = payload.data.accessToken;
+            // Decode the JWT to get user basic info
+            const decoded: { sub?: string; name?: string; email?: string } = jwtDecode(token);
+
+            login(token, {
+                id: decoded.sub || 'user-id',
+                name: decoded.name || 'Aluno VIP',
+                email: decoded.email || email,
+            });
+
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('Um erro desconhecido ocorreu');
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="w-full max-w-md mx-auto p-8 rounded-2xl border border-slate-200 bg-white dark:border-[#272e3f] dark:bg-[#171d28] shadow-lg">
@@ -17,10 +63,12 @@ export function LoginForm() {
 
             <div className="flex flex-col gap-3 mb-6">
                 <Button variant="outline" className="w-full relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 absolute left-4" />
                     Continuar com Google
                 </Button>
                 <Button variant="secondary" className="w-full relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="https://www.svgrepo.com/show/511330/apple-173.svg" alt="Apple" className="w-5 h-5 absolute left-4 dark:invert" />
                     Continuar com Apple
                 </Button>
@@ -33,13 +81,22 @@ export function LoginForm() {
                 </span>
             </div>
 
-            <form className="flex flex-col gap-4">
+            {error && (
+                <div className="mb-4 p-3 bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 text-sm rounded-lg text-center font-medium">
+                    {error}
+                </div>
+            )}
+
+            <form className="flex flex-col gap-4" onSubmit={handleLogin}>
                 <div>
                     <label className="block text-sm font-medium mb-1.5 text-slate-700 dark:text-slate-300">Email</label>
                     <Input
                         type="email"
                         placeholder="seu@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         icon={<Mail className="w-4 h-4" />}
+                        required
                     />
                 </div>
 
@@ -49,7 +106,10 @@ export function LoginForm() {
                         <Input
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             icon={<Lock className="w-4 h-4" />}
+                            required
                         />
                         <button
                             type="button"
@@ -71,11 +131,13 @@ export function LoginForm() {
                     </a>
                 </div>
 
-                <Button type="submit" className="w-full text-base font-semibold group py-6">
-                    Entrar
-                    <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
+                <Button type="submit" disabled={isLoading} className="w-full text-base font-semibold group py-6">
+                    {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Entrar'}
+                    {!isLoading && (
+                        <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    )}
                 </Button>
             </form>
 

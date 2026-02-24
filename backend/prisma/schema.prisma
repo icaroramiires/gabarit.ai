@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  schedules StudySchedule[]
+  answers   Answer[]
+
+  @@map("users")
+}
+
+model StudySchedule {
+  id         String   @id @default(uuid())
+  userId     String
+  targetExam String
+  startDate  DateTime
+  createdAt  DateTime @default(now())
+
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blocks StudyBlock[]
+
+  @@map("study_schedules")
+}
+
+model StudyBlock {
+  id                       String    @id @default(uuid())
+  scheduleId               String
+  subject                  String
+  topic                    String
+  plannedDurationInMinutes Int
+  status                   String    @default("pending")
+  startedAt                DateTime?
+  elapsedTimeInMinutes     Int       @default(0)
+  completedAt              DateTime?
+  createdAt                DateTime  @default(now())
+
+  schedule StudySchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@map("study_blocks")
+}
+
+model Question {
+  id        String   @id @default(uuid())
+  bank      String
+  subject   String
+  topic     String
+  year      Int
+  text      String
+  createdAt DateTime @default(now())
+
+  alternatives Alternative[]
+  answers      Answer[]
+
+  @@map("questions")
+}
+
+model Alternative {
+  id          String  @id @default(uuid())
+  questionId  String
+  text        String
+  isCorrect   Boolean
+  explanation String?
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers  Answer[]
+
+  @@map("alternatives")
+}
+
+model Answer {
+  id                    String   @id @default(uuid())
+  userId                String
+  questionId            String
+  selectedAlternativeId String
+  isCorrect             Boolean
+  createdAt             DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question    Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  alternative Alternative @relation(fields: [selectedAlternativeId], references: [id], onDelete: Cascade)
+
+  @@map("answers")
+}
