@@ -3,13 +3,20 @@ import { StudySchedule } from '../../domain/entities/study-schedule';
 import { StudyScheduleRepository } from '../../domain/repositories/study-schedule-repository';
 import { UniqueEntityID } from '../../../../core/domain/UniqueEntityID';
 
+import { AddXpUseCase } from '../../../gamification/application/usecases/add-xp.usecase';
+import { UpdateStreakUseCase } from '../../../gamification/application/usecases/update-streak.usecase';
+
 export interface MarkBlockCompletedRequestDto {
     scheduleId: string;
     blockId: string;
 }
 
 export class MarkBlockCompletedUseCase {
-    constructor(private scheduleRepository: StudyScheduleRepository) { }
+    constructor(
+        private studyScheduleRepository: StudyScheduleRepository,
+        private addXpUseCase?: AddXpUseCase,
+        private updateStreakUseCase?: UpdateStreakUseCase
+    ) { }
 
     async execute({
         scheduleId,
@@ -18,7 +25,7 @@ export class MarkBlockCompletedUseCase {
         const scheduleUniqueId = new UniqueEntityID(scheduleId);
 
         // 1. Fetch Schedule
-        const schedule = await this.scheduleRepository.findById(scheduleUniqueId);
+        const schedule = await this.studyScheduleRepository.findById(scheduleUniqueId);
 
         if (!schedule) {
             return left(new Error('Cronograma não encontrado.'));
@@ -40,7 +47,16 @@ export class MarkBlockCompletedUseCase {
         block.markAsCompleted();
 
         // 4. Save Aggregation Root (Schedule)
-        await this.scheduleRepository.save(schedule);
+        await this.studyScheduleRepository.save(schedule);
+
+        if (this.addXpUseCase && this.updateStreakUseCase) {
+            try {
+                await this.updateStreakUseCase.execute(schedule.userId.toString());
+                await this.addXpUseCase.execute(schedule.userId.toString(), 50); // +50 XP for completing a study block
+            } catch (error) {
+                console.error("Failed to apply gamification", error);
+            }
+        }
 
         return right(schedule);
     }

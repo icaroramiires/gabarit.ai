@@ -1,8 +1,13 @@
+'use client';
+
 import { ReactNode } from "react";
-import { LayoutDashboard, CalendarDays, BookOpen, BarChart3 } from "lucide-react";
+import { LayoutDashboard, CalendarDays, BookOpen, BarChart3, User, Crown } from "lucide-react";
 import { Progress } from "@/shared/ui/progress";
+import { usePathname } from "next/navigation";
 
 export function Sidebar() {
+    const pathname = usePathname();
+
     return (
         <aside className="w-64 h-screen flex flex-col bg-white dark:bg-[#11141c] border-r border-slate-200 dark:border-[#272e3f] sticky top-0">
 
@@ -24,10 +29,12 @@ export function Sidebar() {
 
             {/* Navigation Links */}
             <nav className="flex-1 px-4 mt-6 space-y-1">
-                <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" />
-                <NavItem icon={<CalendarDays size={20} />} label="Cronograma" active />
-                <NavItem icon={<BookOpen size={20} />} label="Matérias" />
-                <NavItem icon={<BarChart3 size={20} />} label="Desempenho" />
+                <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" href="/dashboard" active={pathname === '/dashboard'} />
+                <NavItem icon={<CalendarDays size={20} />} label="Cronograma" href="/dashboard" active={pathname === '/dashboard'} />
+                <NavItem icon={<BookOpen size={20} />} label="Matérias" href="#" />
+                <NavItem icon={<BarChart3 size={20} />} label="Desempenho" href="#" />
+                <NavItem icon={<User size={20} />} label="Meu Perfil" href="/profile" active={pathname === '/profile'} />
+                <NavItem icon={<Crown size={20} className="text-amber-400" />} label="Planos Pro" href="/pricing" active={pathname === '/pricing'} />
             </nav>
 
             {/* Bottom Area - Progress / Upsell */}
@@ -42,10 +49,10 @@ export function Sidebar() {
     );
 }
 
-function NavItem({ icon, label, active = false }: { icon: ReactNode, label: string, active?: boolean }) {
+function NavItem({ icon, label, href = "#", active = false }: { icon: ReactNode, label: string, href?: string, active?: boolean }) {
     return (
         <a
-            href="#"
+            href={href}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium ${active
                 ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                 : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-[#171d28] dark:hover:text-slate-200"

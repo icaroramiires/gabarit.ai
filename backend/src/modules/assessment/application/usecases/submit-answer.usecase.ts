@@ -3,9 +3,15 @@ import { SubmitAnswerRequestDto } from '../dtos/submit-answer.dto';
 import { Either, left, right } from '../../../../core/logic/Either';
 import { Answer } from '../../domain/entities/answer';
 import { UniqueEntityID } from '../../../../core/domain/UniqueEntityID';
+import { AddXpUseCase } from '../../../gamification/application/usecases/add-xp.usecase';
+import { UpdateStreakUseCase } from '../../../gamification/application/usecases/update-streak.usecase';
 
 export class SubmitAnswerUseCase {
-    constructor(private questionRepository: QuestionRepository) { }
+    constructor(
+        private questionRepository: QuestionRepository,
+        private addXpUseCase?: AddXpUseCase,
+        private updateStreakUseCase?: UpdateStreakUseCase
+    ) { }
 
     async execute(request: SubmitAnswerRequestDto): Promise<Either<Error, Answer>> {
         const question = await this.questionRepository.findById(request.questionId);
@@ -25,6 +31,18 @@ export class SubmitAnswerUseCase {
             );
 
             await this.questionRepository.saveAnswer(answer);
+
+            // Core Gamification triggers (fire and forget for MVP)
+            if (this.addXpUseCase && this.updateStreakUseCase) {
+                try {
+                    await this.updateStreakUseCase.execute(request.userId);
+                    if (answer.isCorrect) {
+                        await this.addXpUseCase.execute(request.userId, 10); // +10 XP por acerto
+                    }
+                } catch (error) {
+                    console.error("Failed to apply gamification", error);
+                }
+            }
 
             return right(answer);
         } catch (error: any) {

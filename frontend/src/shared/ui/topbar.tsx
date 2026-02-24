@@ -1,6 +1,20 @@
-import { Search, Bell, Settings } from "lucide-react";
+'use client';
+
+import { Search, Bell, Settings, Zap } from "lucide-react";
+import { useAuth } from "@/core/auth/AuthContext";
+import { useEffect, useState } from "react";
 
 export function TopBar() {
+    const { user } = useAuth();
+    const [profile, setProfile] = useState<{ level: number, currentStreak: number } | null>(null);
+
+    useEffect(() => {
+        if (!user) return;
+        fetch(`http://localhost:3001/api/gamification/profile/${user.id}`)
+            .then(res => res.json())
+            .then(res => setProfile(res.data))
+            .catch(err => console.error("Error fetching gamification profile", err));
+    }, [user]);
     return (
         <header className="h-16 w-full flex items-center justify-between px-8 bg-white dark:bg-[#11141c] border-b border-slate-200 dark:border-[#272e3f] sticky top-0 z-10">
 
@@ -18,8 +32,15 @@ export function TopBar() {
 
             {/* Right Actions */}
             <div className="flex items-center gap-4 ml-auto">
-                <button className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+                {profile && profile.currentStreak > 0 && (
+                    <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 rounded-full text-sm font-bold border border-orange-200 dark:border-orange-800/50">
+                        <Zap size={16} className="fill-current" />
+                        <span>Streak: {profile.currentStreak} dias</span>
+                    </div>
+                )}
+                <button className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors relative">
                     <Bell className="h-5 w-5" />
+                    <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white dark:border-[#11141c]"></span>
                 </button>
                 <button className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
                     <Settings className="h-5 w-5" />
@@ -27,8 +48,8 @@ export function TopBar() {
 
                 <div className="flex items-center gap-3 ml-2 border-l border-slate-200 dark:border-[#272e3f] pl-4">
                     <div className="hidden lg:flex flex-col items-end">
-                        <span className="text-sm font-bold text-slate-900 dark:text-white leading-tight">Lucas Mendes</span>
-                        <span className="text-xs text-slate-500 font-medium">Estudante de Direito</span>
+                        <span className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{user ? user.name : 'Carregando...'}</span>
+                        <span className="text-xs text-slate-500 font-medium">{profile ? `Nível ${profile.level}` : 'Carregando...'}</span>
                     </div>
                     <div className="h-9 w-9 rounded-full bg-indigo-100 dark:bg-indigo-900/30 ring-2 ring-white dark:ring-[#11141c] overflow-hidden flex-shrink-0">
                         <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Lucas&backgroundColor=e2e8f0" alt="Avatar" className="w-full h-full object-cover" />

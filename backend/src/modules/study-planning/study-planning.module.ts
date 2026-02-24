@@ -6,8 +6,13 @@ import { GetSchedulesUseCase } from './application/usecases/get-schedules.usecas
 import { StartStudySessionUseCase } from './application/usecases/start-study-session.usecase';
 import { PauseStudySessionUseCase } from './application/usecases/pause-study-session.usecase';
 import { StudySchedulePrismaRepository } from './infrastructure/repositories/study-schedule-prisma.repository';
+import { GamificationModule } from '../gamification/gamification.module';
+import { AddXpUseCase } from '../gamification/application/usecases/add-xp.usecase';
+import { UpdateStreakUseCase } from '../gamification/application/usecases/update-streak.usecase';
+import { PrismaModule } from '../../infrastructure/prisma/prisma.module';
 
 @Module({
+    imports: [PrismaModule, GamificationModule],
     controllers: [StudyPlanningController],
     providers: [
         {
@@ -23,10 +28,10 @@ import { StudySchedulePrismaRepository } from './infrastructure/repositories/stu
         },
         {
             provide: MarkBlockCompletedUseCase,
-            useFactory: (repository: StudySchedulePrismaRepository) => {
-                return new MarkBlockCompletedUseCase(repository);
+            useFactory: (repository: StudySchedulePrismaRepository, addXp: AddXpUseCase, updateStreak: UpdateStreakUseCase) => {
+                return new MarkBlockCompletedUseCase(repository, addXp, updateStreak);
             },
-            inject: ['StudyScheduleRepository'],
+            inject: ['StudyScheduleRepository', AddXpUseCase, UpdateStreakUseCase],
         },
         {
             provide: GetSchedulesUseCase,

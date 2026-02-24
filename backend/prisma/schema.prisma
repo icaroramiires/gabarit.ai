@@ -14,10 +14,42 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
 
-  schedules StudySchedule[]
-  answers   Answer[]
+  studySchedules StudySchedule[]
+  answers        Answer[]
+  studentProfile StudentProfile?
+  subscription   Subscription?
 
   @@map("users")
+}
+
+model StudentProfile {
+  id             String    @id @default(uuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  xp             Int       @default(0)
+  level          Int       @default(1)
+  currentStreak  Int       @default(0)
+  longestStreak  Int       @default(0)
+  lastActivityAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@map("student_profiles")
+}
+
+model Subscription {
+  id                   String    @id @default(uuid())
+  user                 User      @relation(fields: [userId], references: [id])
+  userId               String    @unique
+  planType             String    @default("FREE") // FREE | PRO
+  status               String    @default("INACTIVE") // ACTIVE | INACTIVE | CANCELED
+  stripeSubscriptionId String?   @unique
+  stripeCustomerId     String?   @unique
+  expiresAt            DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@map(name: "subscriptions")
 }
 
 model StudySchedule {

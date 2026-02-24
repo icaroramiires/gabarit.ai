@@ -4,9 +4,12 @@ import { GetQuestionsUseCase } from './application/usecases/get-questions.usecas
 import { SubmitAnswerUseCase } from './application/usecases/submit-answer.usecase';
 import { QuestionPrismaRepository } from './infrastructure/repositories/question-prisma.repository';
 import { PrismaModule } from '../../infrastructure/prisma/prisma.module';
+import { GamificationModule } from '../gamification/gamification.module';
+import { AddXpUseCase } from '../gamification/application/usecases/add-xp.usecase';
+import { UpdateStreakUseCase } from '../gamification/application/usecases/update-streak.usecase';
 
 @Module({
-    imports: [PrismaModule],
+    imports: [PrismaModule, GamificationModule],
     controllers: [AssessmentController],
     providers: [
         {
@@ -22,10 +25,10 @@ import { PrismaModule } from '../../infrastructure/prisma/prisma.module';
         },
         {
             provide: SubmitAnswerUseCase,
-            useFactory: (repository: QuestionPrismaRepository) => {
-                return new SubmitAnswerUseCase(repository);
+            useFactory: (repository: QuestionPrismaRepository, addXp: AddXpUseCase, updateStreak: UpdateStreakUseCase) => {
+                return new SubmitAnswerUseCase(repository, addXp, updateStreak);
             },
-            inject: ['QuestionRepository'],
+            inject: ['QuestionRepository', AddXpUseCase, UpdateStreakUseCase],
         },
     ],
 })
