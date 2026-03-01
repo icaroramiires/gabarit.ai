@@ -79,7 +79,7 @@ export default function PerformancePage() {
         return (
             <AppLayout>
                 <div className="flex items-center justify-center h-full">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                 </div>
             </AppLayout>
         );
@@ -100,21 +100,21 @@ export default function PerformancePage() {
 
     return (
         <AppLayout>
-            <div className="space-y-8 animate-in fade-in duration-700">
+            <div className="p-10 max-w-[1400px] mx-auto space-y-8 animate-in fade-in duration-700">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                            <BarChart3 className="text-indigo-400 h-8 w-8" />
+                        <h1 className="text-[28px] font-bold text-foreground flex items-center gap-3">
+                            <BarChart3 className="text-primary h-8 w-8" />
                             Análise de Desempenho
                         </h1>
-                        <p className="text-slate-400 mt-2">Visão detalhada do seu progresso e áreas de melhoria.</p>
+                        <p className="text-slate-500 mt-2">Visão detalhada do seu progresso e áreas de melhoria.</p>
                     </div>
 
                     <button
                         onClick={handleDownloadPDF}
                         disabled={downloading}
-                        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-indigo-500/20"
+                        className="flex items-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground px-6 py-3 rounded-full font-bold transition-all shadow-sm"
                     >
                         {downloading ? (
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -130,52 +130,52 @@ export default function PerformancePage() {
                     <KpiCard
                         title="Acerto Global"
                         value={`${(stats?.quizzes?.globalAccuracy * 100).toFixed(1)}%`}
-                        icon={<Target className="text-emerald-400" />}
+                        icon={<Target className="text-emerald-500" />}
                         trend="+2.5%"
                     />
                     <KpiCard
                         title="Questões Respondidas"
                         value={stats?.quizzes?.history?.reduce((acc: any, curr: any) => acc + curr.totalAnswered, 0) || 0}
-                        icon={<FileText className="text-blue-400" />}
+                        icon={<FileText className="text-blue-500" />}
                     />
                     <KpiCard
                         title="Duração Média"
                         value="42 min"
-                        icon={<TrendingUp className="text-indigo-400" />}
+                        icon={<TrendingUp className="text-indigo-500" />}
                     />
                     <KpiCard
                         title="Reviews Flashcard"
                         value={stats?.flashcards?.totalReviews || 0}
-                        icon={<BrainCircuit className="text-purple-400" />}
+                        icon={<BrainCircuit className="text-purple-500" />}
                     />
                 </div>
 
                 {/* Main Charts */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Radar Chart - Accuracy by Subject */}
-                    <div className="bg-[#161B22]/60 border border-slate-800 rounded-3xl p-8 backdrop-blur-xl">
+                    <div className="bg-card border border-border rounded-[24px] p-8 shadow-sm">
                         <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-bold flex items-center gap-2">
-                                <Target size={20} className="text-indigo-400" />
+                            <h3 className="text-xl font-bold flex items-center gap-2 text-foreground">
+                                <Target size={20} className="text-primary" />
                                 Aproveitamento por Disciplina
                             </h3>
                         </div>
                         <div className="h-[400px] w-full">
                             <ResponsiveContainer width="100%" height="100%">
                                 <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                                    <PolarGrid stroke="#334155" />
-                                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                                    <PolarGrid stroke="#e2e8f0" strokeOpacity={0.4} />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 12 }} />
                                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                                     <Radar
                                         name="Desempenho"
                                         dataKey="A"
-                                        stroke="#818cf8"
-                                        fill="#818cf8"
+                                        stroke="#10b981"
+                                        fill="#10b981"
                                         fillOpacity={0.6}
                                     />
                                     <Tooltip
-                                        contentStyle={{ backgroundColor: '#161B22', borderColor: '#334155', borderRadius: '12px' }}
-                                        itemStyle={{ color: '#f8fafc' }}
+                                        contentStyle={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)', borderRadius: '12px' }}
+                                        itemStyle={{ color: 'var(--foreground)' }}
                                     />
                                 </RadarChart>
                             </ResponsiveContainer>
@@ -183,10 +183,10 @@ export default function PerformancePage() {
                     </div>
 
                     {/* Area Chart - Progress over time */}
-                    <div className="bg-[#161B22]/60 border border-slate-800 rounded-3xl p-8 backdrop-blur-xl">
+                    <div className="bg-card border border-border rounded-[24px] p-8 shadow-sm">
                         <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-xl font-bold flex items-center gap-2">
-                                <HistoryIcon size={20} className="text-indigo-400" />
+                            <h3 className="text-xl font-bold flex items-center gap-2 text-foreground">
+                                <HistoryIcon size={20} className="text-primary" />
                                 Evolução Semanal (Taxa de Acerto)
                             </h3>
                         </div>
@@ -195,21 +195,21 @@ export default function PerformancePage() {
                                 <AreaChart data={lineData}>
                                     <defs>
                                         <linearGradient id="colorAcc" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#818cf8" stopOpacity={0.3} />
-                                            <stop offset="95%" stopColor="#818cf8" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" strokeOpacity={0.4} vertical={false} />
                                     <XAxis dataKey="date" stroke="#64748b" tick={{ fontSize: 11 }} />
                                     <YAxis stroke="#64748b" tick={{ fontSize: 11 }} domain={[0, 100]} />
                                     <Tooltip
-                                        contentStyle={{ backgroundColor: '#161B22', borderColor: '#334155', borderRadius: '12px' }}
-                                        itemStyle={{ color: '#f8fafc' }}
+                                        contentStyle={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)', borderRadius: '12px' }}
+                                        itemStyle={{ color: 'var(--foreground)' }}
                                     />
                                     <Area
                                         type="monotone"
                                         dataKey="accuracy"
-                                        stroke="#818cf8"
+                                        stroke="#10b981"
                                         strokeWidth={3}
                                         fillOpacity={1}
                                         fill="url(#colorAcc)"
@@ -221,17 +221,17 @@ export default function PerformancePage() {
                 </div>
 
                 {/* Detailed Table Placeholder / Next Actions */}
-                <div className="bg-[#161B22]/60 border border-slate-800 rounded-3xl p-8 backdrop-blur-xl">
-                    <h3 className="text-xl font-bold mb-6">Sugestões de Foco baseadas em IA</h3>
+                <div className="bg-card border border-border rounded-[24px] p-8 shadow-sm">
+                    <h3 className="text-xl font-bold mb-6 text-foreground">Sugestões de Foco baseadas em IA</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {[
-                            { subj: "Direito Constitucional", status: "Alerta", color: "text-amber-400" },
-                            { subj: "Português", status: "Excelente", color: "text-emerald-400" },
-                            { subj: "Matemática", status: "Recuperação", color: "text-rose-400" }
+                            { subj: "Direito Constitucional", status: "Alerta", color: "text-amber-500", bg: "bg-amber-100 dark:bg-amber-500/10" },
+                            { subj: "Português", status: "Excelente", color: "text-emerald-500", bg: "bg-emerald-100 dark:bg-emerald-500/10" },
+                            { subj: "Matemática", status: "Recuperação", color: "text-rose-500", bg: "bg-rose-100 dark:bg-rose-500/10" }
                         ].map((item, i) => (
-                            <div key={i} className="flex items-center justify-between p-4 bg-black/20 rounded-2xl border border-slate-800">
-                                <span className="font-medium">{item.subj}</span>
-                                <span className={`text-sm font-bold ${item.color}`}>{item.status}</span>
+                            <div key={i} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-[#18191d] rounded-[16px] border border-border">
+                                <span className="font-bold text-foreground text-sm">{item.subj}</span>
+                                <span className={`text-xs font-bold px-2 py-1 rounded-md ${item.color} ${item.bg}`}>{item.status}</span>
                             </div>
                         ))}
                     </div>
@@ -243,18 +243,20 @@ export default function PerformancePage() {
 
 function KpiCard({ title, value, icon, trend }: { title: string, value: any, icon: any, trend?: string }) {
     return (
-        <div className="bg-[#161B22]/60 border border-slate-800 rounded-3xl p-6 backdrop-blur-xl flex flex-col gap-4">
+        <div className="bg-card border border-border rounded-[24px] p-6 shadow-sm flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <div className="p-3 bg-slate-800/50 rounded-2xl">{icon}</div>
+                <div className="p-3 bg-slate-100 dark:bg-[#33343c] rounded-[14px]">
+                    {icon}
+                </div>
                 {trend && (
-                    <span className="text-xs font-bold text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
+                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-500/10 px-2 py-1 rounded-full">
                         {trend}
                     </span>
                 )}
             </div>
             <div>
-                <p className="text-slate-400 text-sm font-medium">{title}</p>
-                <h4 className="text-2xl font-bold text-white mt-1">{value}</h4>
+                <p className="text-slate-500 text-sm font-semibold mb-1">{title}</p>
+                <h4 className="text-[32px] leading-none font-bold text-foreground">{value}</h4>
             </div>
         </div>
     );

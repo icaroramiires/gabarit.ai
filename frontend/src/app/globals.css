@@ -19,28 +19,36 @@
 }
 
 :root {
-  --background: #f0f8ff; /* Light bluish tint from the light mode image  */
-  --foreground: #09090b;
+  --background: #f1f3f5;
+  /* Light mode bg exact matching */
+  --foreground: #111827;
   --card: #ffffff;
-  --card-foreground: #09090b;
-  --primary: #2563eb;
+  --card-foreground: #111827;
+  --primary: #1f2937;
+  /* Dark pill buttons in light mode */
   --primary-foreground: #ffffff;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #2563eb;
-  --radius: 0.5rem;
+  --border: #e5e7eb;
+  --input: #f3f4f6;
+  --ring: #22c55e;
+  /* Green accent */
+  --radius: 1.5rem;
+  /* Highly rounded corners */
 }
 
 .dark {
-  --background: #11141c; /* Very dark rich blue background from image */
-  --foreground: #f8fafc;
-  --card: #171d28;
-  --card-foreground: #f8fafc;
-  --primary: #2563eb; /* Kept standard blue for primary action */
-  --primary-foreground: #ffffff;
-  --border: #272e3f;
-  --input: #272e3f;
-  --ring: #2563eb;
+  --background: #2c2d33;
+  /* Exact dark background from reference */
+  --foreground: #f9fafb;
+  --card: #222328;
+  /* Exact dark card from reference */
+  --card-foreground: #f9fafb;
+  --primary: #ffffff;
+  /* White pill buttons in dark mode */
+  --primary-foreground: #111827;
+  --border: #33343c;
+  /* Soft border for cards */
+  --input: #33343c;
+  --ring: #22c55e;
 }
 
 * {
@@ -55,6 +63,9 @@ body {
 }
 
 /* Base styles to make the app fill the screen */
-html, body, #__next, .__next {
+html,
+body,
+#__next,
+.__next {
   height: 100%;
 }

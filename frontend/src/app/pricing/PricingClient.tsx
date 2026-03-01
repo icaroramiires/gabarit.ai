@@ -56,25 +56,25 @@ export default function PricingClient() {
         <div className="relative w-full max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8 overflow-hidden font-sans">
             {/* Background Glows */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-[1000px] pointer-events-none -z-10">
-                <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] mix-blend-screen opacity-50"></div>
-                <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-indigo-600/20 rounded-full blur-[100px] mix-blend-screen opacity-40"></div>
+                <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] mix-blend-screen opacity-50"></div>
+                <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px] mix-blend-screen opacity-40"></div>
             </div>
 
             <div className="text-center mb-16 relative z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold mb-6 shadow-sm shadow-blue-500/10">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-6 shadow-sm shadow-primary/10">
                     <Sparkles className="w-4 h-4" />
                     <span>Alcance a Aprovação Mais Rápido</span>
                 </div>
-                <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                <h1 className="text-5xl md:text-6xl font-extrabold text-foreground tracking-tight leading-tight">
                     Eleve seus estudos ao <br className="hidden md:block" />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Próximo Nível</span>
+                    <span className="text-primary">Próximo Nível</span>
                 </h1>
-                <p className="mt-6 text-xl text-slate-400 max-w-2xl mx-auto font-medium">
+                <p className="mt-6 text-xl text-slate-500 max-w-2xl mx-auto font-medium">
                     Escolha o plano ideal e junte-se aos concurseiros que estão hackeando a aprovação com Inteligência Artificial.
                 </p>
 
                 {statusMessage && (
-                    <div className={`mx-auto mt-8 inline-flex items-center p-4 rounded-xl text-sm font-medium backdrop-blur-md shadow-2xl ${statusMessage.type === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}`}>
+                    <div className={`mx-auto mt-8 inline-flex items-center p-4 rounded-xl text-sm font-medium backdrop-blur-md shadow-2xl ${statusMessage.type === 'success' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/30' : 'bg-red-500/10 text-red-500 border border-red-500/30'}`}>
                         {statusMessage.type === 'success' ? <ShieldCheck className="w-5 h-5 mr-3" /> : <AlertCircle className="w-5 h-5 mr-3" />}
                         {statusMessage.text}
                     </div>
@@ -83,17 +83,17 @@ export default function PricingClient() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto relative z-10">
                 {/* Plano Essencial */}
-                <div className="bg-slate-900/60 backdrop-blur-xl rounded-[2rem] p-10 border border-slate-700/50 flex flex-col hover:border-slate-600/50 transition-colors shadow-xl">
+                <div className="bg-card backdrop-blur-xl rounded-[24px] p-10 border border-border flex flex-col hover:border-slate-500/50 transition-colors shadow-sm">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 bg-slate-800 rounded-lg">
-                            <Zap className="w-6 h-6 text-slate-400" />
+                        <div className="p-2 bg-slate-100 dark:bg-[#33343c] rounded-lg">
+                            <Zap className="w-6 h-6 text-slate-500" />
                         </div>
-                        <h3 className="text-2xl font-bold text-white tracking-wide">Essencial</h3>
+                        <h3 className="text-2xl font-bold text-foreground tracking-wide">Essencial</h3>
                     </div>
-                    <p className="text-slate-400 mb-8 mt-2 font-medium">Para quem está construindo a base de conhecimento.</p>
+                    <p className="text-slate-500 mb-8 mt-2 font-medium">Para quem está construindo a base de conhecimento.</p>
 
-                    <div className="mb-8 pb-8 border-b border-slate-800 flex items-baseline">
-                        <span className="text-5xl font-extrabold text-white">Grátis</span>
+                    <div className="mb-8 pb-8 border-b border-border flex items-baseline">
+                        <span className="text-5xl font-extrabold text-foreground">Grátis</span>
                         <span className="text-slate-500 ml-2 font-medium">para sempre</span>
                     </div>
 
@@ -106,42 +106,42 @@ export default function PricingClient() {
                             'Ranking Geral (Visualização)'
                         ].map((feature, i) => (
                             <li key={i} className="flex items-start">
-                                <div className="mt-0.5 p-1 bg-slate-800 rounded-full mr-4 shrink-0">
-                                    <Check className="w-3.5 h-3.5 text-slate-300" />
+                                <div className="mt-0.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-full mr-4 shrink-0">
+                                    <Check className="w-3.5 h-3.5 text-slate-500" />
                                 </div>
-                                <span className="text-slate-300 font-medium">{feature}</span>
+                                <span className="text-slate-600 dark:text-slate-300 font-medium">{feature}</span>
                             </li>
                         ))}
                     </ul>
 
                     <button
                         disabled
-                        className="w-full py-4 rounded-xl font-bold text-slate-400 bg-slate-800/50 border border-slate-700/50 cursor-not-allowed transition-colors"
+                        className="w-full py-4 rounded-xl font-bold text-slate-500 bg-slate-100 dark:bg-slate-800/50 border border-border cursor-not-allowed transition-colors"
                     >
                         Seu Plano Atual
                     </button>
                 </div>
 
                 {/* Plano Premium (Pro) */}
-                <div className="relative bg-slate-900/80 backdrop-blur-xl rounded-[2rem] p-10 border-2 border-blue-500/50 flex flex-col shadow-[0_0_50px_-12px_rgba(59,130,246,0.3)] transform md:-translate-y-4 hover:shadow-[0_0_60px_-10px_rgba(59,130,246,0.4)] transition-all duration-300">
+                <div className="relative bg-card backdrop-blur-xl rounded-[24px] p-10 border-2 border-primary/50 flex flex-col shadow-sm transform md:-translate-y-4 hover:shadow-xl transition-all duration-300">
                     <div className="absolute -top-4 inset-x-0 flex justify-center">
-                        <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-bold uppercase tracking-widest py-1.5 px-4 rounded-full flex items-center shadow-lg shadow-blue-500/25 border border-blue-400/30">
+                        <span className="bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest py-1.5 px-4 rounded-full flex items-center shadow-lg border border-primary/30">
                             <Sparkles className="w-3.5 h-3.5 mr-1.5" />
                             Recomendado
                         </span>
                     </div>
 
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 bg-blue-500/20 rounded-lg border border-blue-500/30">
-                            <ShieldCheck className="w-6 h-6 text-blue-400" />
+                        <div className="p-2 bg-primary/10 rounded-lg border border-primary/20">
+                            <ShieldCheck className="w-6 h-6 text-primary" />
                         </div>
-                        <h3 className="text-2xl font-bold text-white tracking-wide">Pro Aceleração</h3>
+                        <h3 className="text-2xl font-bold text-foreground tracking-wide">Pro Aceleração</h3>
                     </div>
-                    <p className="text-blue-200/70 mb-8 mt-2 font-medium">Desbloqueie seu potencial máximo de retenção.</p>
+                    <p className="text-slate-500 mb-8 mt-2 font-medium">Desbloqueie seu potencial máximo de retenção.</p>
 
-                    <div className="mb-8 pb-8 border-b border-slate-800 flex items-baseline">
-                        <span className="text-5xl font-extrabold text-white">R$ 29</span>
-                        <span className="text-xl text-slate-400 ml-2 font-medium">/mês</span>
+                    <div className="mb-8 pb-8 border-b border-border flex items-baseline">
+                        <span className="text-5xl font-extrabold text-foreground">R$ 29</span>
+                        <span className="text-xl text-slate-500 ml-2 font-medium">/mês</span>
                     </div>
 
                     <ul className="space-y-5 mb-10 flex-1">
@@ -149,15 +149,15 @@ export default function PricingClient() {
                             'Simulados ilimitados',
                             'Acesso Ilimitado ao AI Tutor',
                             'Cronograma Adaptativo (Machine Learning)',
-                            'Flashcards & Spaced Repetition (Em Breve)',
+                            'Flashcards & Spaced Repetition',
                             'Ranking Ativo e Disputa de Medalhas',
                             'Suporte Prioritário'
                         ].map((feature, i) => (
                             <li key={i} className="flex items-start">
-                                <div className="mt-0.5 p-1 bg-blue-500/20 rounded-full mr-4 shrink-0 border border-blue-500/30">
-                                    <Check className="w-3.5 h-3.5 text-blue-400" />
+                                <div className="mt-0.5 p-1 bg-primary/10 rounded-full mr-4 shrink-0 border border-primary/20">
+                                    <Check className="w-3.5 h-3.5 text-primary" />
                                 </div>
-                                <span className="text-slate-100 font-medium">{feature}</span>
+                                <span className="text-foreground font-medium">{feature}</span>
                             </li>
                         ))}
                     </ul>
@@ -165,7 +165,7 @@ export default function PricingClient() {
                     {isPro ? (
                         <button
                             disabled
-                            className="w-full py-4 rounded-xl font-bold text-green-400 bg-green-500/10 border border-green-500/30 cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full py-4 rounded-xl font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-500/10 border border-emerald-500/30 cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             <ShieldCheck className="w-5 h-5" />
                             Assinatura Ativa 🎉
@@ -174,7 +174,7 @@ export default function PricingClient() {
                         <button
                             onClick={handleCheckout}
                             disabled={isLoading}
-                            className={`w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 transition-all shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:shadow-[0_0_30px_rgba(79,70,229,0.5)] group flex justify-center items-center gap-2 ${isLoading ? 'opacity-70 cursor-wait' : ''}`}
+                            className={`w-full py-4 rounded-xl font-bold text-primary-foreground bg-primary hover:bg-primary/90 transition-all shadow-md group flex justify-center items-center gap-2 ${isLoading ? 'opacity-70 cursor-wait' : ''}`}
                         >
                             {isLoading ? 'Redirecionando...' : (
                                 <>
