@@ -39,6 +39,10 @@ export class StudySchedule extends Entity<StudyScheduleProps> {
         this.props.blocks.push(block);
     }
 
+    public clearPendingBlocks(): void {
+        this.props.blocks = this.props.blocks.filter(b => b.status === 'completed');
+    }
+
     private constructor(props: StudyScheduleProps, id?: UniqueEntityID) {
         super(
             {

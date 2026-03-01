@@ -10,9 +10,16 @@ import { GamificationModule } from '../gamification/gamification.module';
 import { AddXpUseCase } from '../gamification/application/usecases/add-xp.usecase';
 import { UpdateStreakUseCase } from '../gamification/application/usecases/update-streak.usecase';
 import { PrismaModule } from '../../infrastructure/prisma/prisma.module';
+import { PrismaService } from '../../infrastructure/prisma/prisma.service';
+import { AiCopilotModule } from '../ai-copilot/ai-copilot.module';
+import { AssessmentModule } from '../assessment/assessment.module';
+import { RegenerateScheduleUseCase } from './application/usecases/regenerate-schedule.usecase';
+import { GetWeeklyPerformanceUseCase } from '../assessment/application/usecases/get-weekly-performance.usecase';
+import { RebalanceScheduleUseCase } from '../ai-copilot/application/usecases/rebalance-schedule.usecase';
+import { AdaptiveCronService } from './application/services/adaptive-cron.service';
 
 @Module({
-    imports: [PrismaModule, GamificationModule],
+    imports: [PrismaModule, GamificationModule, AiCopilotModule, AssessmentModule],
     controllers: [StudyPlanningController],
     providers: [
         {
@@ -54,6 +61,24 @@ import { PrismaModule } from '../../infrastructure/prisma/prisma.module';
             },
             inject: ['StudyScheduleRepository'],
         },
+        {
+            provide: RegenerateScheduleUseCase,
+            useFactory: (
+                repository: StudySchedulePrismaRepository,
+                getPerformance: GetWeeklyPerformanceUseCase,
+                rebalance: RebalanceScheduleUseCase
+            ) => {
+                return new RegenerateScheduleUseCase(repository, getPerformance, rebalance);
+            },
+            inject: ['StudyScheduleRepository', GetWeeklyPerformanceUseCase, RebalanceScheduleUseCase],
+        },
+        {
+            provide: AdaptiveCronService,
+            useFactory: (prisma: PrismaService, regenerateSchedule: RegenerateScheduleUseCase) => {
+                return new AdaptiveCronService(prisma, regenerateSchedule);
+            },
+            inject: [PrismaService, RegenerateScheduleUseCase],
+        }
     ],
 })
 export class StudyPlanningModule { }

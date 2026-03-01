@@ -100,7 +100,7 @@ export default function DashboardPage() {
     return (
         <AppLayout>
             <div className="p-8 h-full flex flex-col relative">
-                <div className="flex items-center justify-between mb-8 flex-shrink-0">
+                <div className="flex items-center justify-between mb-6 flex-shrink-0">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Cronograma da Semana</h1>
                         <p className="text-slate-500 dark:text-slate-400 text-sm">
@@ -122,6 +122,25 @@ export default function DashboardPage() {
                         )}
                     </div>
                 </div>
+
+                {/* AI Insight Banner (Simulated for V2 Pro Users) */}
+                {activeSchedule && (
+                    <div className="mb-8 bg-gradient-to-r from-indigo-900/40 via-blue-900/20 to-slate-900/40 border border-indigo-500/30 rounded-2xl p-4 flex items-start gap-4 shadow-lg shadow-indigo-900/20 backdrop-blur-md relative overflow-hidden">
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                        <div className="p-2.5 bg-indigo-500/20 border border-indigo-500/30 rounded-xl shrink-0">
+                            <Sparkles className="w-5 h-5 text-indigo-400" />
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-sm font-bold text-indigo-100 mb-1 flex items-center gap-2">
+                                Cronograma Rebalanceado pela IA
+                                <span className="bg-indigo-500/20 text-indigo-300 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-indigo-500/20">Pro</span>
+                            </h3>
+                            <p className="text-xs text-indigo-200/70 leading-relaxed max-w-4xl">
+                                Analisamos seu desempenho da última semana e notamos uma queda de rendimento em <strong>Direito Constitucional</strong>. O <em>AI Copilot</em> otimizou seus blocos de estudo pendentes para reforçar essa disciplina com Revisão Ativa. Bons estudos!
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Kanban Board */}
                 <div className="flex-1 flex gap-6 overflow-x-auto min-h-0 pb-6">

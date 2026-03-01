@@ -18,6 +18,7 @@ model User {
   answers        Answer[]
   studentProfile StudentProfile?
   subscription   Subscription?
+  decks          Deck[]
 
   @@map("users")
 }
@@ -124,3 +125,45 @@ model Answer {
 
   @@map("answers")
 }
+
+model Deck {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flashcards Flashcard[]
+
+  @@map("decks")
+}
+
+model Flashcard {
+  id        String   @id @default(uuid())
+  deckId    String
+  front     String
+  back      String
+  createdAt DateTime @default(now())
+
+  deck    Deck             @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  reviews FlashcardReview[]
+
+  @@map("flashcards")
+}
+
+model FlashcardReview {
+  id             String   @id @default(uuid())
+  flashcardId    String
+  userId         String
+  easinessFactor Float    @default(2.5) // Fator de Facilidade do SM-2
+  interval       Int      @default(0)   // Intervalo de dias para o próximo review
+  repetition     Int      @default(0)   // Número de repetições consecutivas com sucesso
+  nextReviewDate DateTime @default(now())
+  reviewedAt     DateTime @default(now())
+
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+
+  @@map("flashcard_reviews")
+}
+

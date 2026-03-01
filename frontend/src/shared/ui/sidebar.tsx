@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from "react";
-import { LayoutDashboard, CalendarDays, BookOpen, BarChart3, User, Crown } from "lucide-react";
+import { LayoutDashboard, CalendarDays, BookOpen, BarChart3, User, Crown, Library } from "lucide-react";
 import { Progress } from "@/shared/ui/progress";
 import { usePathname } from "next/navigation";
 
@@ -32,7 +32,8 @@ export function Sidebar() {
                 <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" href="/dashboard" active={pathname === '/dashboard'} />
                 <NavItem icon={<CalendarDays size={20} />} label="Cronograma" href="/dashboard" active={pathname === '/dashboard'} />
                 <NavItem icon={<BookOpen size={20} />} label="Matérias" href="#" />
-                <NavItem icon={<BarChart3 size={20} />} label="Desempenho" href="#" />
+                <NavItem icon={<Library size={20} />} label="Flashcards" href="/flashcards" active={pathname === '/flashcards'} />
+                <NavItem icon={<BarChart3 size={20} />} label="Desempenho" href="/performance" active={pathname === '/performance'} />
                 <NavItem icon={<User size={20} />} label="Meu Perfil" href="/profile" active={pathname === '/profile'} />
                 <NavItem icon={<Crown size={20} className="text-amber-400" />} label="Planos Pro" href="/pricing" active={pathname === '/pricing'} />
             </nav>
